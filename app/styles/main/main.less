@@ -1,0 +1,270 @@
+﻿/*
+    HOMESCONNECT 3.0
+    UI Dashboard Template Stylesheet - Global styles shared across all themes
+
+    [Table of Contents]
+        Element Styles
+        State Styles
+        Custom Mixins
+        Component Styles
+        Javascript Styles
+*/
+
+
+
+/**
+    Element Styles
+
+    [Description]
+        Default styles for HTML elements.
+**/
+
+*, *:before, *:after {
+    // The following are useful styles to apply universally, which tend to be the default style more oft than not
+    .box-sizing;
+    position: relative;
+    background-repeat: no-repeat;
+    -webkit-tap-highlight-color: transparent;
+    word-wrap: break-word;
+}
+
+html {
+    @media (min-width: @zoom-breakpoint) { .rem(font-size, @default-font-size * 1.5); }
+    height: 100%;
+}
+
+body {
+    .rem(font-size, @default-font-size);
+    color: @default-text-color;
+    font-family: @default-font-family;
+    overflow-x: hidden;
+    font-weight: @default-font-weight;
+    line-height: @line-height-default;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    .rem(font-size, @default-font-size);
+    margin: 0;
+}
+
+h3 {.rem(font-size, @kilo);}
+h5 {.rem(font-size, @milli);}
+
+a {
+  color: @link-color;
+  text-decoration: none;
+  cursor: pointer;
+  &:visited { color: @link-color; }
+  &:hover { color: @link-hover-color; }
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+select {
+    &:hover { cursor: pointer; }
+}
+
+label {
+    &:disabled,
+    &[disabled],
+    .disabled & {
+        color: @tertiary-color-md-lt;
+    }
+}
+
+option {
+    background: #fff;
+}
+
+textarea {
+    padding: 5px;
+    border: none;
+    background: none;
+    width: 100%;
+    height: 100%;
+}
+
+a,
+input,
+select,
+textarea,
+button {
+  &:focus { outline: none; }
+}
+
+
+::-webkit-input-placeholder { color: lighten(@input-text-color, 25%); }
+:-moz-placeholder { color: lighten(@input-text-color, 25%); }
+::-moz-placeholder { color: lighten(@input-text-color, 25%); }
+:-ms-input-placeholder { color: lighten(@input-text-color, 25%); }
+
+
+input,
+select,
+textarea {
+    .rem(font-size, @milli);
+    &:disabled,
+    &[disabled]{
+        background-color: @tertiary-color-md-lt;
+        background-color: rgba(204, 204, 204, 0.69);
+        cursor: default;
+    }
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+
+
+a[disabled] {
+    cursor: default;
+}
+
+/**
+    State Styles
+
+    [Description]
+        Styles for various UI states.
+**/
+
+:checked {}
+:focus { outline-color: transparent; }
+:required {}
+:valid {}
+
+
+
+
+/**
+    Custom Mixins
+
+    [Description]
+        Define your repeatable patterns here. A few examples have been given to get you started.
+        Remember to append a parenthesis after your custom mixins. This is to prevent them from being output after LESS compilation.
+**/
+
+
+
+
+#patterns {
+    .button() {
+        .rem(border, @border-width, @border-style, @button-border-color);
+        .rem(border-radius, @button-border-radius);
+        .rem(padding, @button-vertical-padding, @button-horizontal-padding);
+        display: inline-block;
+        color: @button-text-color;
+        word-wrap: normal;
+        line-height: @line-height-normalized;
+        text-align: center;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+            color: @button-text-color;
+        }
+        @media (min-width: @small-desktop-breakpoint) {
+            .transition(all, 0.3s, ease);
+        }
+    }
+
+    .panel() {
+        background-color: @panel-background-color;
+        .rem(padding, @padding-double);
+        .rem(box-shadow, 1, 1, 7, -1.5, rgba(0, 0, 0, 0.5));
+    }
+
+    .panel-header() {
+        background: @heading-background-color;
+        .rem(padding, 0, 0, @padding-double);
+    }
+
+    .panel-title() {
+        color: @heading-text-color;
+        font-family: @heading-font-family;
+        font-weight: @default-font-weight;
+        text-transform: uppercase;
+        .rem(font-size, @default-font-size + 4);
+
+        @media (min-width: @tablet-breakpoint) {
+            .rem(font-size, @default-font-size + 6);
+        }
+
+        @media (min-width: @large-desktop-breakpoint) {
+            .rem(font-size, @default-font-size + 8);
+        }
+    }
+
+    .panel-body() {
+        .rem(padding, @padding, 0);
+    }
+
+    .panel-footer() {
+        .rem(padding, @padding-double, 0, 0);
+    }
+
+    .placeholder(@rules) {
+        &::-webkit-input-placeholder {
+            @rules();
+        }
+        &:-moz-placeholder {
+            @rules();
+        }
+        &::-moz-placeholder {
+            @rules();
+        }
+        &:-ms-input-placeholder {
+            @rules();
+        }
+    }
+
+}
+
+
+
+
+/**
+    Component Styles
+
+    [Description]
+        Each component is listed here in alphabetical order, along with any modifiers.
+**/
+
+
+
+
+////    Buttons    ////
+.button {
+    #patterns > .button;
+    @media (min-width: @small-desktop-breakpoint) {
+        .transition(all, 0.3s, ease);
+    }
+    &:link,
+    &:visited,
+    &:active  {
+        color: @button-text-color;
+    }
+    &:hover {
+        color: @button-text-color;
+        background: @button-background-hover-color;
+    }
+    .button--text {
+        line-height: normal;
+    }
+}
+

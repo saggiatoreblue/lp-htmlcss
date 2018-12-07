@@ -1,0 +1,22 @@
+﻿/**
+    Globals
+
+    [Description]
+        All of the global stylesheets are combined into a single file, for easy import into each template's theme.less file.
+**/
+
+@viewport {
+    // IE 10 in "snapped" mode does not support viewport meta tag, but supports @viewport
+    // @viewport will eventually replace the viewport meta tag
+    // For now leave -ms- prefix, as @viewport alone breaks the Chrome inspector. https://code.google.com/p/chromium/issues/detail?id=278289
+    width: device-width;
+    zoom: 1;
+}
+
+@import "variables.less";
+@import "animations.less";
+@import "utilities.less";
+@import "normalize.less";
+@import "grids.less";
+@import "flex.less";
+

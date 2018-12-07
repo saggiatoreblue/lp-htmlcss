@@ -1,0 +1,25 @@
+{
+  "name": "lp-htmlcss",
+  "version": "1.0.0",
+  "description": "HTML/CSS Test",
+  "main": "index.html",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:saggiatoreblue/lp-htmlcss.git"
+  },
+  "keywords": [
+    "base"
+  ],
+  "author": "Michael Botelho",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.4.0",
+    "gulp-less": "^4.0.1",
+    "gulp-notify": "^3.2.0",
+    "gulp-util": "^3.0.8"
+  }
+}

@@ -1,0 +1,233 @@
+﻿/**
+    Custom Variables
+
+    [Description]
+        This is where the variables for the current theme are defined. After the variables are defined, globals.less and template.less are imported.
+
+    [Table of Contents]
+        Google Font Imports
+        Custom Mixins
+        Custom Variables
+        Required Defaults
+        Optional Defaults
+        LESS Imports
+
+    [Media Query Variables]
+        @mobile-portrait-breakpoint: 320px;
+        @mobile-landscape-breakpoint: 480px;
+        @tablet-breakpoint: 768px;
+        @small-desktop-breakpoint: 1024px;
+        @medium-desktop-breakpoint: 1280px;
+        @large-desktop-breakpoint: 1366px;
+        @zoom-breakpoint: 2000px;
+
+    [Breakpoints for using Max-width media Queries which require 1px less than standard breakpoints]
+        @mw_mobile-portrait-breakpoint	: 319px;
+		@mw_mobile-landscape-breakpoint	: 479px;
+		@mw_tablet-breakpoint			: 767px;
+		@mw_small-desktop-breakpoint	: 1023px;
+		@mw_medium-desktop-breakpoint	: 1279px;
+		@mw_large-desktop-breakpoint	: 1365px;
+		@mw_zoom-breakpoint				: 1999px;
+
+**/
+
+
+/**
+    Custom Mixins
+
+    [Description]
+        Define your repeatable patterns here. A few examples have been given to get you started.
+        Remember to append a parenthesis after your custom mixins. This is to prevent them from being output after LESS compilation.
+**/
+
+/**
+    Google Font Imports
+
+    [Description]
+        Define any google font imports you wish to use here.
+**/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300italic,300,400italic,600,600italic,700,700italic);
+ /**Cheatsheet for Open Sans styles to be used according to HDC Living Style Guide Doc
+     Light : 300
+     Light Italic: 300italic
+     Normal: 400
+     Italic: 400 italic
+     Semibold: 600
+     Semibold Italic: 600 italic
+     Bold: 700
+     Bold Italic: 700 italic
+ **/
+
+
+
+/**
+    Custom Variables Pt 1
+
+    [Description]
+        Define any custom variables you wish to use here.
+        If you need them to inherit optional/required variables, add them to "Custom Variables Pt 2" instead.
+
+    [Notes]
+        Abbreviations:
+        - des = desaturated
+        - lt = light
+        - md = medium
+**/
+
+@red: #ed1c24;
+@green: #38a927;
+@yellow : #ffcc00;
+
+@primary-color: #0054a0;
+@primary-color-dark: #000056;
+@primary-color-md: #7fa9cf;
+@primary-color-light: #dde9f3;
+@primary-color-des: #aec9d7;
+@primary-color-des-dark: #092e4f;
+
+@secondary-color: #f7841b;
+@secondary-color-dark: #f44e0f;
+@secondary-color-light: #fbc18d;
+
+@tertiary-color: #888;
+@tertiary-color-dark: #484848;
+@tertiary-color-md: #aaa;
+@tertiary-color-md-lt: #ccc;
+@tertiary-color-light: #e9eaee;
+@tertiary-color-extra-lt: #f4f5f7;
+@tertiary-color-warm: #f2e9e1;
+
+/**
+    Required Defaults
+
+    [Description]
+        The following variables are required, please update their values to reflect your design. They will be used for scalability.
+**/
+@default-font-family: 'Open Sans', sans-serif;
+@default-background-color: @tertiary-color-light;
+@default-text-color: @tertiary-color-dark;
+@default-font-size: 16;
+@default-font-weight: 400;
+@font-weight-light: 300;
+@font-weight-bold: 600;
+@font-weight-bolder: 700;
+
+@header-text-color: @tertiary-color-extra-lt;
+
+@html-background-color: @tertiary-color;
+
+@footer-text-color: @tertiary-color-extra-lt;
+@footer-background-color: {background: @tertiary-color;};
+
+
+@heading-font-family: 'Open Sans', sans-serif;
+@heading-background-color: transparent;
+@heading-text-color: @tertiary-color-dark;
+@heading-font-size: @default-font-size + 8;
+@heading-font-weight: 700;
+
+@panel-background-color: #fff;
+@panel-text-color: @default-text-color;
+@panel-border-radius: 0;
+@alt-panel-background-color: @tertiary-color-dark;
+
+@input-text-color: #666;
+@input-border-radius: 4;
+
+@line-height-base: 0.25; // this is used as a base value to calculate all line heights
+@line-height-normalized: @line-height-base * 4; // this sets line height to 1, to remove the influence of line-height on an elements vertical center
+
+@link-color: @primary-color;
+@link-hover-color: @primary-color-dark;//contrast(@panel-background-color, lighten(@link-color, 15%), darken(@link-color, 15%) )
+@link-visited-color: @primary-color; //contrast(@panel-background-color, lighten(@link-color, 15%), darken(@link-color, 15%) )
+
+@border-width: 1;
+@border-style: solid;
+@border-color: @tertiary-color-md-lt;
+@light-border-color: @tertiary-color-extra-lt;//lighten(@border-color, 15%)
+@dark-border-color: @tertiary-color-dark;//darken(@border-color, 10%)
+
+@button-text-color: #fff;
+@button-background-color: @secondary-color;
+@alt-button-background-color: @secondary-color-light;
+@button-border-color: transparent;
+@button-border-radius: 5;
+@button-vertical-padding: 15; //7
+@button-horizontal-padding: 20; //21
+@button-background-hover-color: @secondary-color-dark;
+@alt-button-background-hover-color: @tertiary-color;
+
+@lightbox-header-background-color: @primary-color;
+@lightbox-background-color: @panel-background-color;
+
+/**
+    Optional Defaults
+
+    [Description]
+        The following variables are optional, made available for your convenience. They may be modified, but not removed.
+**/
+@font-size-ratio: 1;
+@line-height-ratio: 1.5;
+@icon-font-size: @default-font-size * @line-height-ratio;
+@lowlight-text-color: @default-text-color; // For alternating table row text colors
+@lowlight-background-color: transparent; // For alternating table row background colors
+@highlight-text-color: @default-text-color; // For alternating table row text colors
+@highlight-background-color: rgba(0, 0, 0, .07); // For alternating table row background colors
+
+
+@padding: (@line-height-ratio - @font-size-ratio) * @default-font-size; //8
+@padding-half: @padding / 2; //4
+@padding-third: @padding / 3; //2.6666
+@padding-quarter: @padding / 4; //2
+@padding-double: @padding * 2; //16
+@padding-triple: @padding * 3; //24
+@padding-quadruple: @padding * 4; //32
+@inlinespace: 4; // The amount of extra "space" between display:inline-block elements
+@gutter: @default-font-size * @line-height-ratio; //24
+@gutter-half: @gutter / 2; //12
+@gutter-third: @gutter / 3; //8
+@gutter-quarter: @gutter / 4; //6
+@gutter-double: @gutter * 2; //48
+@gutter-triple: @gutter * 3; //72
+@gutter-quadruple: @gutter * 4; //96
+@form-error-border-color: #f7841b;
+@form-error-background-color: #fff;
+@form-error-text-color: @default-text-color;
+@widget-vertical-padding: @padding-double;
+@widget-horizontal-padding: @padding-triple;
+/**
+    Custom Variables Pt 2
+
+    [Description]
+        Define any custom variables you wish to use here.
+        Place variables down here that you want to inherit from any of the optional/required variables above.
+**/
+
+@giga: @default-font-size + 22;
+@mega: @default-font-size + 14;
+@kilo: @default-font-size + 8;
+@hecto: @default-font-size + 4;
+@deca: @default-font-size + 2;
+@deci: @default-font-size - 1;
+@centi: @default-font-size - 2;
+@milli: @default-font-size - 3;
+@micro: @default-font-size - 4;
+@nano: @default-font-size - 5;
+
+@line-height-small: @line-height-base * 5; // 1.25
+@line-height-default: @line-height-base * 6; // 1.5
+@line-height-large: @line-height-base * 8; // 2
+@line-height-extra-large : @line-height-base * 15;// 3.75
+
+@loader-color: @secondary-color;
+
+/**
+    LESS Imports
+
+    [Description]
+        LESS stylesheet imports. Keep these imports at the bottom of the stylesheet.
+**/
+@import "../globalless/globals.less";
+@import "../main/main.less";
+

@@ -1,0 +1,1820 @@
+/*
+     Utility Mixins
+
+    [Description]
+        The utility mixins are a collection of shortcuts/helpers to assist you when writing your CSS.
+
+    [Table of Contents]
+        Background Image
+        Border Radius
+        Box Sizing
+        Clear Fix
+        Contain
+        Ellipsis
+        Fill
+        Gradient
+        Hide
+        Hide Text
+        Infinity
+        Invisible
+        REM / PX
+        Shapes
+        Show
+        Transition
+        Transparent
+**/
+
+
+
+
+/**
+    Background Image Mixin
+
+    [Description]
+        Allows you to add a background image that can be scaled to fit its container, and will crop if it exceeds the specified aspect ratio.
+        Available aspect ratios are 2:1, 3:1, 4:3, 16:9
+        Note that you call .background-image(), the .background-image-mixin() you see below is used for abstraction.
+**/
+
+.background-image(@aspectRatio: 169) when (isnumber(@aspectRatio)) {
+    .background-image-mixin(@aspectRatio);
+}
+
+.background-image(contain) {
+    .background-image-mixin(169, null, null, contain);
+}
+
+.background-image(@aspectRatio, @maxHeight) when (isnumber(@aspectRatio)) and (isnumber(@maxHeight)) {
+    .background-image-mixin(@aspectRatio, @maxHeight);
+}
+
+.background-image(@aspectRatio, contain) when (isnumber(@aspectRatio)) {
+    .background-image-mixin(@aspectRatio, null, null, contain);
+}
+
+.background-image(@aspectRatio, @maxHeight, @maxWidth) when (isnumber(@aspectRatio)) and (isnumber(@maxHeight)) and (isnumber(@maxWidth)) {
+    .background-image-mixin(@aspectRatio, @maxHeight, @maxWidth);
+}
+
+.background-image(@aspectRatio, @maxHeight, contain) when (isnumber(@aspectRatio)) and (isnumber(@maxHeight)) {
+    .background-image-mixin(@aspectRatio, @maxHeight, null, contain);
+}
+
+.background-image(@aspectRatio, @maxHeight, @maxWidth, contain) when (isnumber(@aspectRatio)) and (isnumber(@maxHeight)) and (isnumber(@maxWidth))  {
+    .background-image-mixin(@aspectRatio, @maxHeight, @maxWidth, contain);
+}
+
+.background-image-mixin (@aspectRatio: 169, @maxHeight: null, @maxWidth: null, @backgroundSize: cover) {
+    display: block;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: @backgroundSize;
+    margin: 0 auto;
+    overflow: hidden;
+
+    &:before {
+        display: block;
+        content: "";
+    }
+
+    .maxHeight (@maxHeight) when (isnumber(@maxHeight)) and not (ispercentage(@maxHeight)) { .rem(max-height, @maxHeight); }
+    .maxHeight (@maxHeight) when (ispercentage(@maxHeight)) { max-height: @maxHeight; }
+    .maxHeight(@maxHeight);
+
+    .maxWidth (@maxWidth) when (isnumber(@maxWidth)) and not (ispercentage(@maxWidth)) { .rem(max-width, @maxWidth); }
+    .maxWidth (@maxWidth) when (ispercentage(@maxWidth)) { max-width: @maxWidth; }
+    .maxWidth(@maxWidth);
+
+    .aspectRatio(11) { &:before { padding-bottom: 100%; } }
+    .aspectRatio(21) { &:before { padding-bottom: 50%; } }
+    .aspectRatio(31) { &:before { padding-bottom: 33.3333333%; } }
+    .aspectRatio(34) { &:before { padding-bottom: 25%; } }
+    .aspectRatio(43) { &:before { padding-bottom: 75%; } }
+    .aspectRatio(169) { &:before { padding-bottom: 56.3333333%; } }
+    .aspectRatio(@aspectRatio);
+}
+
+
+/**
+    Border Radius Mixin
+
+    [Description]
+        Outputs vendor prefixes for the border radius property
+**/
+.border-radius (@radius) {
+    @radiusREM: (@radius / 16);
+	-webkit-border-radius: ~"@{radiusREM}rem";
+	-moz-border-radius:    ~"@{radiusREM}rem";
+	border-radius:         ~"@{radiusREM}rem";
+
+	-moz-background-clip:    padding;
+	-webkit-background-clip: padding-box;
+	background-clip:         padding-box;
+}
+
+
+/**
+    Box Sizing Mixin
+
+    [Description]
+        Outputs vendor prefixes for the box-sizing property.
+**/
+.box-sizing(@sizing: border-box) {
+  -moz-box-sizing: @sizing;
+  -webkit-box-sizing: @sizing;
+  box-sizing: @sizing;
+}
+
+
+
+
+/**
+    Clear Fix Mixin
+
+    [Description]
+        Prevent parent containers from collapsing on floated child elements.
+**/
+.clear-fix {
+    &:after {
+        display: table;
+        clear: both;
+        content: "";
+    }
+}
+
+
+
+
+/**
+    Clip Mixin
+
+    [Description]
+        Outputs vendor prefixes for the background-clip property.
+**/
+.clip(border) {
+    -webkit-background-clip: border;
+    background-clip: border-box;
+}
+
+.clip(padding) {
+    -webkit-background-clip: padding;
+    background-clip: padding-box;
+}
+
+.clip(content) {
+    -webkit-background-clip: content;
+    background-clip: content-box;
+}
+
+
+
+
+/**
+    Contain Mixin
+
+    [Description]
+        Set fixed width and center high level container elements, based on the viewport.
+**/
+.contain(@margin: 0) {
+    margin-right: auto;
+    margin-left: auto;
+    .rem(width, @mobile-portrait-breakpoint-value - (@margin / 2) );
+
+    @media (min-width: @mobile-landscape-breakpoint) {
+        .rem(width, @mobile-landscape-breakpoint-value - @margin);
+    }
+
+    @media (min-width: @tablet-breakpoint) {
+        .rem(width, @tablet-breakpoint-value - @margin);
+    }
+
+    @media (min-width: @small-desktop-breakpoint) {
+        .rem(width, @small-desktop-breakpoint-value - (@margin * 2) );
+    }
+
+    @media (min-width: @medium-desktop-breakpoint) {
+        .rem(width, @medium-desktop-breakpoint-value - (@margin * 2) );
+    }
+
+    @media (min-width: @large-desktop-breakpoint) {
+        .rem(width, @large-desktop-breakpoint-value - (@margin * 2) );
+    }
+}
+
+
+
+
+/**
+    Ellipsis Mixin
+
+    [Description]
+        Cut off long text with a trailing ellipsis.
+**/
+.ellipsis {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: normal;
+
+    &:hover, &:focus {
+        white-space: normal;
+    }
+}
+
+
+
+
+
+/**
+    Fill Mixins
+
+    [Description]
+        Shortcuts for absolutely positioning elements to fill their container.
+
+    [Example #1]
+        .fill(5);
+
+        // Output:
+        position: absolute;
+        top: 5rem;
+        top: 5px;
+        right: 5rem;
+        right: 5px;
+        bottom: 5rem;
+        bottom: 5px;
+        left: 5rem;
+        left: 5px;
+
+    [Example #2]
+        .fill(top);
+
+        // Output:
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+
+    [Example #3]
+        .fill(horizontal);
+
+        // Output:
+        position: absolute;
+        left: 0;
+        right: 0;
+**/
+.fill {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.fill(@offset) when (isnumber(@offset)) and not (ispercentage(@offset)) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    top: ~"@{offset}px";
+    top: ~"@{offsetREM}rem";
+    right: ~"@{offset}px";
+    right: ~"@{offsetREM}rem";
+    bottom: ~"@{offset}px";
+    bottom: ~"@{offsetREM}rem";
+    left: ~"@{offset}px";
+    left: ~"@{offsetREM}rem";
+}
+
+.fill(@offsetTopAndBottom, @offsetLeftAndRight)
+    when (isnumber(@offsetTopAndBottom))
+    and (isnumber(@offsetLeftAndRight))
+    and not (ispercentage(@offsetTopAndBottom))
+    and not (ispercentage(@offsetLeftAndRight))
+{
+    @offsetTopAndBottomREM: @offsetTopAndBottom / 16;
+    @offsetLeftAndRightREM: @offsetLeftAndRight / 16;
+    position: absolute;
+    top: ~"@{offsetTopAndBottom}px";
+    top: ~"@{offsetTopAndBottomREM}rem";
+    right: ~"@{offsetLeftAndRight}px";
+    right: ~"@{offsetLeftAndRightREM}rem";
+    bottom: ~"@{offsetTopAndBottom}px";
+    bottom: ~"@{offsetTopAndBottomREM}rem";
+    left: ~"@{offsetLeftAndRight}px";
+    left: ~"@{offsetLeftAndRightREM}rem";
+}
+
+.fill(@offsetTop, @offsetLeftAndRight, @offsetBottom)
+    when (isnumber(@offsetTop))
+    and (isnumber(@offsetLeftAndRight))
+    and (isnumber(@offsetBottom))
+    and not (ispercentage(@offsetTop))
+    and not (ispercentage(@offsetLeftAndRight))
+    and not (ispercentage(@offsetBottom))
+{
+    @offsetTopREM: @offsetTop / 16;
+    @offsetLeftAndRightREM: @offsetLeftAndRight / 16;
+    @offsetBottomREM: @offsetBottom / 16;
+    position: absolute;
+    top: ~"@{offsetTop}px";
+    top: ~"@{offsetTopREM}rem";
+    right: ~"@{offsetLeftAndRight}px";
+    right: ~"@{offsetLeftAndRightREM}rem";
+    bottom: ~"@{offsetBottom}px";
+    bottom: ~"@{offsetBottomREM}rem";
+    left: ~"@{offsetLeftAndRight}px";
+    left: ~"@{offsetLeftAndRightREM}rem";
+}
+
+.fill(@offsetTop, @offsetRight, @offsetBottom, @offsetLeft)
+    when (isnumber(@offsetTop))
+    and (isnumber(@offsetRight))
+    and (isnumber(@offsetBottom))
+    and (isnumber(@offsetLeft))
+    and not (ispercentage(@offsetTop))
+    and not (ispercentage(@offsetRight))
+    and not (ispercentage(@offsetBottom))
+    and not (ispercentage(@offsetLeft))
+{
+    @offsetTopREM: @offsetTop / 16;
+    @offsetRightREM: @offsetRight / 16;
+    @offsetBottomREM: @offsetBottom / 16;
+    @offsetLeftREM: @offsetLeft / 16;
+    position: absolute;
+    top: ~"@{offsetTop}px";
+    top: ~"@{offsetTopREM}rem";
+    right: ~"@{offsetRight}px";
+    right: ~"@{offsetRightREM}rem";
+    bottom: ~"@{offsetBottom}px";
+    bottom: ~"@{offsetBottomREM}rem";
+    left: ~"@{offsetLeft}px";
+    left: ~"@{offsetLeftREM}rem";
+}
+
+.fill(@offset) when (ispercentage(@offset)) {
+    position: absolute;
+    top: @offset;
+    right: @offset;
+    bottom: @offset;
+    left: @offset;
+}
+
+.fill(@offsetTopAndBottom, @offsetLeftAndRight)
+    when (ispercentage(@offsetTopAndBottom))
+    and (ispercentage(@offsetLeftAndRight))
+{
+    position: absolute;
+    top: @offsetTopAndBottom;
+    right: @offsetLeftAndRight;
+    bottom: @offsetTopAndBottom;
+    left: @offsetLeftAndRight;
+}
+
+.fill(@offsetTop, @offsetLeftAndRight, @offsetBottom)
+    when (ispercentage(@offsetTop))
+    and (ispercentage(@offsetLeftAndRight))
+    and (ispercentage(@offsetBottom))
+{
+    position: absolute;
+    top: @offsetTop;
+    right: @offsetLeftAndRight;
+    bottom: @offsetBottom;
+    left: @offsetLeftAndRight;
+}
+
+.fill(@offsetTop, @offsetRight, @offsetBottom, @offsetLeft)
+    when (ispercentage(@offsetTop))
+    and (ispercentage(@offsetRight))
+    and (ispercentage(@offsetBottom))
+    and (ispercentage(@offsetLeft))
+{
+    position: absolute;
+    top: @offsetTop;
+    right: @offsetRight;
+    bottom: @offsetBottom;
+    left: @offsetLeft;
+}
+
+.fill(top) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+.fill(top, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    top: ~"@{offset}px";
+    top: ~"@{offsetREM}rem";
+    right: ~"@{offset}px";
+    right: ~"@{offsetREM}rem";
+    left: ~"@{offset}px";
+    left: ~"@{offsetREM}rem";
+}
+
+.fill(right) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.fill(right, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    top: ~"@{offset}px";
+    top: ~"@{offsetREM}rem";
+    right: ~"@{offset}px";
+    right: ~"@{offsetREM}rem";
+    bottom: ~"@{offset}px";
+    bottom: ~"@{offsetREM}rem";
+}
+
+.fill(bottom) {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.fill(bottom, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    right: ~"@{offset}px";
+    right: ~"@{offsetREM}rem";
+    bottom: ~"@{offset}px";
+    bottom: ~"@{offsetREM}rem";
+    left: ~"@{offset}px";
+    left: ~"@{offsetREM}rem";
+}
+
+.fill(left) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.fill(left, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    top: ~"@{offset}px";
+    top: ~"@{offsetREM}rem";
+    bottom: ~"@{offset}px";
+    bottom: ~"@{offsetREM}rem";
+    left: ~"@{offset}px";
+    left: ~"@{offsetREM}rem";
+}
+
+.fill(horizontal) {
+    position: absolute;
+    right: 0;
+    left: 0;
+}
+
+.fill(horizontal, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    left: ~"@{offset}px";
+    left: ~"@{offsetREM}rem";
+    right: ~"@{offset}px";
+    right: ~"@{offsetREM}rem";
+}
+
+.fill(vertical) {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+}
+
+.fill(vertical, @offset) {
+    @offsetREM: @offset / 16;
+    position: absolute;
+    top: ~"@{offset}px";
+    top: ~"@{offsetREM}rem";
+    bottom: ~"@{offset}px";
+    bottom: ~"@{offsetREM}rem";
+}
+
+.fill(relative) {
+    position: relative;
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.fill(reset) {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+}
+
+/**
+    Gradient Mixins
+    [Description]
+        Outputs web prefixes for a background gradient, with fallbacks for legacy browsers.
+        In IE9 and lower, border-radius stops working if a filter is applied.
+        Set the final parameter @oldIE to false if you want to remove the filter, true to include it
+*/
+
+
+.gradient(vertical; @colors; @oldIE: true) {
+  @start :
+        color(`
+            (function() {
+                return '@{colors}'.replace(/[\[\]']+/g,'').split(',')[0].split(' ')[0];
+            })()
+		`);
+  @end :
+        color(`
+            (function() {
+                return '@{colors}'.replace(/[\[\]']+/g,'').split(',').pop().split(' ')[1];
+            })()
+		`);
+
+  background: @start;
+  background-image: -webkit-linear-gradient(top, @colors);  // Safari 5.1-6, Chrome 10+
+  background-image: -o-linear-gradient(top, @colors);  // Opera 12
+  background-image: linear-gradient(to bottom, @colors); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+  background-repeat: repeat-x;
+  & when (@oldIE) {
+	filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@start),argb(@end))); // IE9 and down
+
+  }
+}
+
+
+.gradient(horizontal; @colors; @oldIE: true) {
+  @start :
+  		color(`
+            (function() {
+                return '@{colors}'.replace(/[\[\]']+/g,'').split(',')[0].split(' ')[0];
+            })()
+        `);
+  @end :
+        color(`
+            (function() {
+                    return '@{colors}'.replace(/[\[\]']+/g,'').split(',').pop().split(' ')[1];
+            })()
+        `);
+
+  background: @start;
+  background-image: -webkit-linear-gradient(left, @colors); // Safari 5.1-6, Chrome 10+
+  background-image: -o-linear-gradient(left, @colors); // Opera 12
+  background-image: linear-gradient(to right, @colors); // Standard, IE10, Firefox 16+, Opera 12.10+, Safari 7+, Chrome 26+
+  background-repeat: repeat-x;
+  & when (@oldIE) {
+	filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(@start),argb(@end))); // IE9 and down
+  }
+}
+
+
+.gradient(radial; @innerColor; @outerColor;) {
+  background-image: -webkit-radial-gradient(circle, @innerColor, @outerColor);
+  background-image: radial-gradient(circle, @innerColor, @outerColor);
+  background-repeat: no-repeat;
+}
+
+
+/**
+    Hide Mixin
+
+    [Description]
+        Force an element to display:none. Used primarily as a helper class for JS.
+**/
+.hide { display: none !important; }
+
+
+
+
+/**
+    Hide on Mobile Mixin
+
+    [Description]
+        Hide an element only for the mobile breakpoints.
+**/
+.hide-mobile {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: block !important; }
+}
+
+/**
+    Hide on Mobile Mixin (Inline)
+
+    [Description]
+        Hide an element only for the mobile breakpoints, otherwise display as inline.
+**/
+.hide-mobile__i {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline !important; }
+}
+
+/**
+    Hide on Mobile Mixin (Inline Block)
+
+    [Description]
+        Hide an element only for the mobile breakpoints, otherwise display as inline-block.
+**/
+.hide-mobile__ib {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline-block !important; }
+}
+
+/**
+    Hide on Mobile Mixin (Portrait)
+
+    [Description]
+        Hide an element only for the mobile portrait breakpoint.
+**/
+.hide-mobile__p {
+    display: none !important;
+    @media (min-width: @mobile-landscape-breakpoint) { display: block !important; }
+}
+
+/**
+    Hide on Mobile Mixin (Portrait) (Inline)
+
+    [Description]
+        Hide an element for the mobile portrait breakpoint only, otherwise display as inline.
+**/
+.hide-mobile__p-i {
+    display: none !important;
+    @media (min-width: @mobile-landscape-breakpoint) { display: inline !important; }
+}
+
+/**
+    Hide on Mobile Mixin (Portrait) (Inline Block)
+
+    [Description]
+        Hide an element for the mobile portrait breakpoint only, otherwise display as inline-block.
+**/
+.hide-mobile__p-ib {
+    display: none !important;
+    @media (min-width: @mobile-landscape-breakpoint) { display: inline-block !important; }
+}
+
+
+
+/**
+    Hide on Tablet Mixin
+
+    [Description]
+        Hide an element only for the tablet breakpoint only.
+**/
+.hide-tablet {
+    @media (min-width: @tablet-breakpoint) { display: none !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: block !important; }
+}
+
+/**
+    Hide on Tablet Mixin (Inline)
+
+    [Description]
+        Hide an element for the tablet breakpoint only, otherwise display as inline.
+**/
+.hide-tablet__i {
+    @media (min-width: @tablet-breakpoint) { display: none !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: inline !important; }
+}
+
+/**
+    Hide on Tablet Mixin (Inline Block)
+
+    [Description]
+        Hide an element for the tablet breakpoint only, otherwise display as inline-block.
+**/
+.hide-tablet__ib {
+    @media (min-width: @tablet-breakpoint) { display: none !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: inline-block !important; }
+}
+
+
+
+
+/**
+    Hide on Desktop Mixin
+
+    [Description]
+        Hide an element on the desktop breakpoints.
+**/
+.hide-desktop {
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+}
+
+
+/**
+    Hide on Desktop Mixin (Small)
+
+    [Description]
+        Hide an element only at the small desktop breakpoint.
+**/
+.hide-desktop__small {
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: block !important; }
+}
+
+/**
+    Hide on Desktop Mixin (Small) (Inline)
+
+    [Description]
+        Hide an element only at the small desktop breakpoint, otherwise display as inline.
+**/
+.hide-desktop__small-i{
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: inline !important; }
+}
+
+/**
+    Hide on Desktop Mixin (Small) (Inline Block)
+
+    [Description]
+        Hide an element only at the small desktop breakpoint, otherwise display as inline block.
+**/
+.hide-desktop__small-ib {
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: inline-block !important; }
+}
+
+
+/**
+    Hide on Desktop Mixin (Medium)
+
+    [Description]
+        Hide an element only at the medium desktop breakpoint.
+**/
+.hide-desktop__medium {
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: block !important; }
+}
+
+/**
+    Hide on Desktop Mixin (Medium) (Inline)
+
+    [Description]
+        Hide an element only at the medium desktop breakpoint, otherwise display as inline.
+**/
+.hide-desktop__medium-i{
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: inline !important; }
+}
+
+/**
+    Hide on Desktop Mixin (Medium) (Inline Block)
+
+    [Description]
+        Hide an element only at the medium desktop breakpoint, otherwise display as inline block.
+**/
+.hide-desktop__medium-ib {
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: inline-block !important; }
+}
+
+
+/**
+    Hide on Desktop Mixin (Large)
+
+    [Description]
+        Hide an element only at the large desktop breakpoint.
+**/
+.hide-desktop__large {
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+
+
+
+/**
+    Hide Text Mixin
+
+    [Description]
+        Hide element text.
+**/
+.hide-text {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+
+
+/**
+    Infinity Mixins
+
+    [Description]
+        Extend element background/border beyond the width of the element, making it appear to extend "infinitely".
+**/
+
+.infinity(@params, @stackOrder: 1) {
+
+	&:before, &:after {
+        & when (isruleset(@params))  {
+            @params();
+        }
+		content: "";
+		position: absolute;
+		top: 0;
+		bottom: 0;
+        .rem(padding, 0, 2000);
+        .rem(margin, 0, -2000);
+        z-index: -@stackOrder;
+	}
+	&:before { left: 100%; }
+	&:after { right: 100%; }
+}
+
+
+
+
+/**
+    Invisible Mixin
+
+    [Description]
+        Force elements to be invisible. Used primarily as a helper class for JS.
+**/
+.invisible {
+    visibility: hidden !important;
+}
+
+
+
+
+/**
+    REM Mixins
+
+    [Description]
+        Shortcut for outputting rem units with pixel units as a fallback.
+
+    [Example]
+        .rem(font-size, 16);
+
+        // Output:
+        font-size: 16px;
+        font-size: 1rem;
+**/
+
+
+// REM Text Indent
+.rem(text-indent, @size) {
+	@sizeREM: (@size / 16);
+	text-indent: ~"@{size}px";
+	text-indent: ~"@{sizeREM}rem";
+}
+
+
+// REM Font Size
+.rem(font-size, @size: @default-font-size) {
+	@sizeREM: (@size / 16);
+	font-size: ~"@{size}px";
+	font-size: ~"@{sizeREM}rem";
+}
+
+
+// REM Line Height
+.rem(line-height, @height: @line-height) {
+	@heightREM: (@height / 16);
+	line-height: ~"@{height}px";
+	line-height: ~"@{heightREM}rem";
+}
+
+
+// REM Width
+.rem(width, @width) {
+	@widthREM: (@width / 16);
+	width: ~"@{width}px";
+	width: ~"@{widthREM}rem";
+}
+
+.rem(min-width, @width) {
+	@widthREM: (@width / 16);
+	min-width: ~"@{width}px";
+	min-width: ~"@{widthREM}rem";
+}
+
+.rem(max-width, @width) {
+	@widthREM: (@width / 16);
+	max-width: ~"@{width}px";
+	max-width: ~"@{widthREM}rem";
+}
+
+
+// REM Height
+.rem(height, @height) {
+	@heightREM: (@height / 16);
+	height: ~"@{height}px";
+	height: ~"@{heightREM}rem";
+}
+
+.rem(min-height, @height) {
+	@heightREM: (@height / 16);
+	min-height: ~"@{height}px";
+	min-height: ~"@{heightREM}rem";
+}
+
+.rem(max-height, @height) {
+	@heightREM: (@height / 16);
+	max-height: ~"@{height}px";
+	max-height: ~"@{heightREM}rem";
+}
+
+
+// REM Margin
+.rem(margin, @margin: @gutter) {
+	@marginREM: (@margin / 16);
+	margin: ~"@{margin}px";
+	margin: ~"@{marginREM}rem";
+}
+
+.rem(margin, @topBottom, @rightLeft) when (isnumber(@rightLeft))  {
+	@topBottomREM: (@topBottom / 16);
+	@rightLeftREM: (@rightLeft / 16);
+	margin: ~"@{topBottom}px" ~"@{rightLeft}px";
+	margin: ~"@{topBottomREM}rem" ~"@{rightLeftREM}rem";
+}
+
+.rem(margin, @topBottom, @rightLeft) when not (isnumber(@rightLeft)) {
+	@topBottomREM: (@topBottom / 16);
+	margin: ~"@{topBottom}px" auto;
+	margin: ~"@{topBottomREM}rem" auto;
+}
+
+.rem(margin, @top, @rightLeft, @bottom) when (isnumber(@rightLeft))  {
+	@topREM: (@top / 16);
+	@rightLeftREM: (@rightLeft / 16);
+	@bottomREM: (@bottom / 16);
+	margin: ~"@{top}px" ~"@{rightLeft}px" ~"@{bottom}px";
+	margin: ~"@{topREM}rem" ~"@{rightLeftREM}rem" ~"@{bottomREM}rem";
+}
+
+.rem(margin, @top, @rightLeft, @bottom) when not (isnumber(@rightLeft)) {
+	@topREM: (@top / 16);
+	@bottomREM: (@bottom / 16);
+	margin: ~"@{top}px" auto ~"@{bottom}px";
+	margin: ~"@{topREM}rem" auto ~"@{bottomREM}rem";
+}
+
+.rem(margin, @top, @right, @bottom, @left) when (isnumber(@left)) and (isnumber(@right)) {
+	@topREM: (@top / 16);
+	@rightREM: (@right / 16);
+	@bottomREM: (@bottom / 16);
+	@leftREM: (@left / 16);
+	margin: ~"@{top}px" ~"@{right}px" ~"@{bottom}px" ~"@{left}px";
+	margin: ~"@{topREM}rem" ~"@{rightREM}rem" ~"@{bottomREM}rem" ~"@{leftREM}rem";
+}
+
+.rem(margin, @top, @right, @bottom, @left) when not (isnumber(@left)) and not (isnumber(@right)) {
+	@topREM: (@top / 16);
+	@bottomREM: (@bottom / 16);
+	margin: ~"@{top}px" auto ~"@{bottom}px" auto;
+	margin: ~"@{topREM}rem" auto ~"@{bottomREM}rem" auto;
+}
+
+.rem(margin-top, @margin: @gutter) {
+	@marginREM: (@margin / 16);
+	margin-top: ~"@{margin}px";
+	margin-top: ~"@{marginREM}rem";
+}
+
+.rem(margin-right, @margin: @gutter) {
+	@marginREM: (@margin / 16);
+	margin-right: ~"@{margin}px";
+	margin-right: ~"@{marginREM}rem";
+}
+
+.rem(margin-bottom, @margin: @gutter) {
+	@marginREM: (@margin / 16);
+	margin-bottom: ~"@{margin}px";
+	margin-bottom: ~"@{marginREM}rem";
+}
+
+.rem(margin-left, @margin: @gutter) {
+	@marginREM: (@margin / 16);
+	margin-left: ~"@{margin}px";
+	margin-left: ~"@{marginREM}rem";
+}
+
+// REM Padding
+.rem(padding, @pad: @padding) {
+	@padREM: (@pad / 16);
+	padding: ~"@{pad}px";
+	padding: ~"@{padREM}rem";
+}
+
+.rem(padding, @topBottom, @rightLeft) {
+	@topBottomREM: (@topBottom / 16);
+	@rightLeftREM: (@rightLeft / 16);
+	padding: ~"@{topBottom}px" ~"@{rightLeft}px";
+	padding: ~"@{topBottomREM}rem" ~"@{rightLeftREM}rem";
+}
+
+.rem(padding, @top, @rightLeft, @bottom) {
+	@topREM: (@top / 16);
+	@rightLeftREM: (@rightLeft / 16);
+	@bottomREM: (@bottom / 16);
+	padding: ~"@{top}px" ~"@{rightLeft}px" ~"@{bottom}px";
+	padding: ~"@{topREM}rem" ~"@{rightLeftREM}rem" ~"@{bottomREM}rem";
+}
+
+.rem(padding, @top, @right, @bottom, @left) {
+	@topREM: (@top / 16);
+	@rightREM: (@right / 16);
+	@bottomREM: (@bottom / 16);
+	@leftREM: (@left / 16);
+	padding: ~"@{top}px" ~"@{right}px" ~"@{bottom}px" ~"@{left}px";
+	padding: ~"@{topREM}rem" ~"@{rightREM}rem" ~"@{bottomREM}rem" ~"@{leftREM}rem";
+}
+
+.rem(padding-top, @pad: @padding) {
+	@padREM: (@pad / 16);
+	padding-top: ~"@{pad}px";
+	padding-top: ~"@{padREM}rem";
+}
+
+.rem(padding-right, @pad: @padding) {
+	@padREM: (@pad / 16);
+	padding-right: ~"@{pad}px";
+	padding-right: ~"@{padREM}rem";
+}
+
+.rem(padding-bottom, @pad: @padding) {
+	@padREM: (@pad / 16);
+	padding-bottom: ~"@{pad}px";
+	padding-bottom: ~"@{padREM}rem";
+}
+
+.rem(padding-left, @pad: @padding) {
+	@padREM: (@pad / 16);
+	padding-left: ~"@{pad}px";
+	padding-left: ~"@{padREM}rem";
+}
+
+// REM Positioning
+.rem(top, @offset) {
+	@offsetREM: (@offset / 16);
+	top: ~"@{offset}px";
+	top: ~"@{offsetREM}rem";
+}
+
+.rem(right, @offset) {
+	@offsetREM: (@offset / 16);
+	right: ~"@{offset}px";
+	right: ~"@{offsetREM}rem";
+}
+
+.rem(bottom, @offset) {
+	@offsetREM: (@offset / 16);
+	bottom: ~"@{offset}px";
+	bottom: ~"@{offsetREM}rem";
+}
+
+.rem(left, @offset) {
+	@offsetREM: (@offset / 16);
+	left: ~"@{offset}px";
+	left: ~"@{offsetREM}rem";
+}
+
+// REM Background Position
+.rem(background-position, @x, @y ) {
+    @xPos: (@x / 16);
+    @yPos: (@y / 16);
+    background-position: ~"@{x}px" ~"@{y}px";
+    background-position: ~"@{xPos}rem"  ~"@{yPos}rem";
+}
+
+// REM Border
+.rem(border, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	border: ~"@{width}px" @style @color;
+	border: ~"@{widthREM}rem" @style @color;
+}
+
+.rem(border-top, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	border-top: ~"@{width}px" @style @color;
+	border-top: ~"@{widthREM}rem" @style @color;
+}
+
+.rem(border-right, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	border-right: ~"@{width}px" @style @color;
+	border-right: ~"@{widthREM}rem" @style @color;
+}
+
+.rem(border-bottom, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	border-bottom: ~"@{width}px" @style @color;
+	border-bottom: ~"@{widthREM}rem" @style @color;
+}
+
+.rem(border-left, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	border-left: ~"@{width}px" @style @color;
+	border-left: ~"@{widthREM}rem" @style @color;
+}
+
+.rem(border-width, @width: @border-width) {
+	@widthREM: (@width / 16);
+	border-width: ~"@{width}px";
+	border-width: ~"@{widthREM}rem";
+}
+
+// REM Box Shadow
+.rem(box-shadow, @h, @v) when (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px";
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem";
+}
+
+.rem(box-shadow, @h, @v, @color) when (iscolor(@color)) and (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px" @color;
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem" @color;
+}
+
+.rem(box-shadow, @h, @v, @blur) when (isnumber(@blur)) and (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px";
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem";
+}
+
+.rem(box-shadow, @h, @v, @blur, @color) when (iscolor(@color)) and (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px" @color;
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" @color;
+}
+
+.rem(box-shadow, @h, @v, @blur, @spread) when (isnumber(@spread)) and (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	@spreadREM: (@spread / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px" ~"@{spread}px";
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" ~"@{spreadREM}rem";
+}
+
+.rem(box-shadow, @h, @v, @blur, @spread, @color) when (isnumber(@h)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	@spreadREM: (@spread / 16);
+	box-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px" ~"@{spread}px" @color;
+    box-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" ~"@{spreadREM}rem" @color;
+}
+
+.rem(box-shadow, inset, @h, @v) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px";
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem";
+}
+
+.rem(box-shadow, inset, @h, @v, @color) when (iscolor(@color)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px" @color;
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem" @color;
+}
+
+.rem(box-shadow, inset, @h, @v, @blur) when (isnumber(@blur)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px" ~"@{blur}px";
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem";
+}
+
+.rem(box-shadow, inset, @h, @v, @blur, @color) when (iscolor(@color)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px" ~"@{blur}px" @color;
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" @color;
+}
+
+.rem(box-shadow, inset, @h, @v, @blur, @spread) when (isnumber(@spread)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	@spreadREM: (@spread / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px" ~"@{blur}px" ~"@{spread}px";
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" ~"@{spreadREM}rem";
+}
+
+.rem(box-shadow, inset, @h, @v, @blur, @spread, @color) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	@spreadREM: (@spread / 16);
+	box-shadow: inset ~"@{h}px" ~"@{v}px" ~"@{blur}px" ~"@{spread}px" @color;
+    box-shadow: inset ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" ~"@{spreadREM}rem" @color;
+}
+
+// REM Text Shadow
+.rem(text-shadow, @h, @v) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	text-shadow: ~"@{h}px" ~"@{v}px";
+    text-shadow: ~"@{hREM}rem" ~"@{vREM}rem";
+}
+
+.rem(text-shadow, @h, @v, @color) when (iscolor(@color)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	text-shadow: ~"@{h}px" ~"@{v}px" @color;
+    text-shadow: ~"@{hREM}rem" ~"@{vREM}rem" @color;
+}
+
+.rem(text-shadow, @h, @v, @blur) when (isnumber(@blur)) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	text-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px";
+    text-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem";
+}
+
+.rem(text-shadow, @h, @v, @blur, @color) {
+	@hREM: (@h / 16);
+	@vREM: (@v / 16);
+	@blurREM: (@blur / 16);
+	text-shadow: ~"@{h}px" ~"@{v}px" ~"@{blur}px" @color;
+    text-shadow: ~"@{hREM}rem" ~"@{vREM}rem" ~"@{blurREM}rem" @color;
+}
+
+// REM Border Radius
+.rem(border-radius, @radius: @border-radius) {
+	@radiusREM: (@radius / 16);
+	border-radius: ~"@{radius}px";
+    border-radius: ~"@{radiusREM}rem";
+}
+
+.rem(border-radius, @topLeftBottomRight, @topRightBottomLeft) {
+	@topLeftBottomRightREM: (@topLeftBottomRight / 16);
+	@topRightBottomLeftREM: (@topRightBottomLeft / 16);
+	border-radius: ~"@{topLeftBottomRight}px" ~"@{topRightBottomLeft}px";
+    border-radius: ~"@{topLeftBottomRightREM}rem" ~"@{topRightBottomLeftREM}rem";
+}
+
+.rem(border-radius, @topLeft, @topRightBottomLeft, @bottomRight) {
+	@topLeftREM: (@topLeft / 16);
+	@topRightBottomLeftREM: (@topRightBottomLeft / 16);
+	@bottomRightREM: (@bottomRight / 16);
+	border-radius: ~"@{topLeft}px" ~"@{topRightBottomLeft}px" ~"@{bottomRight}px";
+    border-radius: ~"@{topLeftREM}rem" ~"@{topRightBottomLeftREM}rem" ~"@{bottomRightREM}rem";
+}
+
+.rem(border-radius, @topLeft, @topRight, @bottomRight, @bottomLeft) {
+	@topLeftREM: (@topLeft / 16);
+	@topRightREM: (@topRight / 16);
+	@bottomRightREM: (@bottomRight / 16);
+	@bottomLeftREM: (@bottomLeft / 16);
+	border-radius: ~"@{topLeft}px" ~"@{topRight}px" ~"@{bottomRight}px" ~"@{bottomLeft}px";
+    border-radius: ~"@{topLeftREM}rem" ~"@{topRightREM}rem" ~"@{bottomRightREM}rem" ~"@{bottomLeftREM}rem";
+}
+
+// REM Outline
+.rem(outline, @width: @border-width, @style: @border-style, @color: @border-color) {
+	@widthREM: (@width / 16);
+	outline: ~"@{width}px" @style @color;
+	outline: ~"@{widthREM}rem" @style @color;
+}
+
+/**
+    Shapes Mixins
+
+    [Description]
+    Shapes created using CSS.
+**/
+.shape(triangle, up, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-left: ~"@{size}px" solid transparent;
+	border-left: ~"@{sizeREM}rem" solid transparent;
+    border-right: ~"@{size}px" solid transparent;
+	border-right: ~"@{sizeREM}rem" solid transparent;
+    border-bottom: ~"@{size}px" solid @color;
+	border-bottom: ~"@{sizeREM}rem" solid @color;
+}
+
+.shape(triangle, right, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-top: ~"@{size}px" solid transparent;
+	border-top: ~"@{sizeREM}rem" solid transparent;
+    border-bottom: ~"@{size}px" solid transparent;
+	border-bottom: ~"@{sizeREM}rem" solid transparent;
+    border-left: ~"@{size}px" solid @color;
+	border-left: ~"@{sizeREM}rem" solid @color;
+}
+
+.shape(triangle, down, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-left: ~"@{size}px" solid transparent;
+	border-left: ~"@{sizeREM}rem" solid transparent;
+    border-right: ~"@{size}px" solid transparent;
+	border-right: ~"@{sizeREM}rem" solid transparent;
+    border-top: ~"@{size}px" solid @color;
+	border-top: ~"@{sizeREM}rem" solid @color;
+}
+
+.shape(triangle, left, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-top: ~"@{size}px" solid transparent;
+	border-top: ~"@{sizeREM}rem" solid transparent;
+    border-bottom: ~"@{size}px" solid transparent;
+	border-bottom: ~"@{sizeREM}rem" solid transparent;
+    border-right: ~"@{size}px" solid @color;
+	border-right: ~"@{sizeREM}rem" solid @color;
+}
+
+.shape(triangle, top-left, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-top: ~"@{size}px" solid @color;
+	border-top: ~"@{sizeREM}rem" solid @color;
+    border-right: ~"@{size}px" solid transparent;
+	border-right: ~"@{sizeREM}rem" solid transparent;
+}
+
+.shape(triangle, top-right, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-top: ~"@{size}px" solid @color;
+	border-top: ~"@{sizeREM}rem" solid @color;
+    border-left: ~"@{size}px" solid transparent;
+	border-left: ~"@{sizeREM}rem" solid transparent;
+}
+
+.shape(triangle, bottom-right, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-bottom: ~"@{size}px" solid @color;
+	border-bottom: ~"@{sizeREM}rem" solid @color;
+    border-left: ~"@{size}px" solid transparent;
+	border-left: ~"@{sizeREM}rem" solid transparent
+}
+
+.shape(triangle, bottom-left, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: 0;
+	height: 0;
+    border-bottom: ~"@{size}px" solid @color;
+	border-bottom: ~"@{sizeREM}rem" solid @color;
+    border-right: ~"@{size}px" solid transparent;
+	border-right: ~"@{sizeREM}rem" solid transparent;
+}
+
+.shape(square, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: ~"@{size}px";
+    width: ~"@{sizeREM}rem";
+	height: ~"@{size}px";
+    height: ~"@{sizeREM}rem";
+    background: @color;
+    display: block;
+}
+
+.shape(rectangle, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    @halfSize: @size / 2;
+    @halfSizeREM: @halfSize / 16;
+    content: "";
+	width: ~"@{size}px";
+    width: ~"@{sizeREM}rem";
+	height: ~"@{halfSize}px";
+    height: ~"@{halfSizeREM}rem";
+    background: @color;
+    display: block;
+}
+
+.shape(circle, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    content: "";
+	width: ~"@{size}px";
+    width: ~"@{sizeREM}rem";
+	height: ~"@{size}px";
+    height: ~"@{sizeREM}rem";
+    border-radius: 50%;
+    background: @color;
+    display: block;
+}
+
+.shape(oval, @size: @default-font-size, @color: @default-text-color) {
+    @sizeREM: @size / 16;
+    @halfSize: @size / 2;
+    @halfSizeREM: @halfSize / 16;
+    @quarterSize: @halfSize / 2;
+    @quarterSizeREM: @quarterSize / 16;
+    content: "";
+	width: ~"@{size}px";
+    width: ~"@{sizeREM}rem";
+	height: ~"@{halfSize}px";
+    height: ~"@{halfSizeREM}rem";
+    border-radius: ~"@{halfSize}px / @{quarterSize}px";
+    border-radius: ~"@{halfSizeREM}rem / @{quarterSizeREM}rem";
+    background: @color;
+    display: block;
+}
+
+
+
+
+/**
+    Show Mixin
+
+    [Description]
+        Force element to display:block. Used primarily as a helper class for JS.
+**/
+.show { display: block !important; }
+
+
+
+/**
+    Show on Mobile Mixin
+
+    [Description]
+        Show an element only for the mobile breakpoints.
+**/
+.show-mobile {
+    @media (min-width: @tablet-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Mobile Mixin
+
+    [Description]
+        Show an element only for the mobile portrait breakpoint.
+**/
+.show-mobile__p {
+    @media (min-width: @mobile-landscape-breakpoint) { display: none !important; }
+}
+
+
+
+/**
+    Show on Tablet Mixin
+
+    [Description]
+        Show element for tablet breakpoint only.
+**/
+.show-tablet {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: block !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Tablet Mixin (Inline)
+
+    [Description]
+        Show element for tablet breakpoint only, and display as inline.
+**/
+.show-tablet__i {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Tablet Mixin (Inline Block)
+
+    [Description]
+        Show element for tablet breakpoint only, and display as inline-block.
+**/
+.show-tablet__ib {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline-block !important; }
+    @media (min-width: @small-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Tablet Mixin (and up)
+
+    [Description]
+        Show element for tablet breakpoint and up.
+**/
+.show-tablet__up {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: block !important; }
+}
+
+/**
+    Show on Tablet Mixin (and up) (Inline)
+
+    [Description]
+        Show element for tablet breakpoint and up, and display as inline.
+**/
+.show-tablet__up-i {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline !important; }
+}
+
+/**
+    Show on Tablet Mixin (and up) (Inline Block)
+
+    [Description]
+        Show element for tablet breakpoint and up, and display as inline-block.
+**/
+.show-tablet__up-ib {
+    display: none !important;
+    @media (min-width: @tablet-breakpoint) { display: inline-block !important; }
+}
+
+
+
+/**
+    Show on Desktop Mixin
+
+    [Description]
+        Show an element for the desktop breakpoints only.
+**/
+.show-desktop {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: block !important; }
+}
+
+/**
+    Show on Desktop Mixin (Inline)
+
+    [Description]
+        Show an element for the desktop breakpoints only.
+**/
+.show-desktop__i {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline !important; }
+}
+
+/**
+    Show on Desktop Mixin (Inline Block)
+
+    [Description]
+        Show an element for the desktop breakpoints only.
+**/
+.show-desktop__ib {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline-block !important; }
+}
+
+
+/**
+    Show on Desktop Mixin (Small)
+
+    [Description]
+        Show an element for the small desktop breakpoint only.
+**/
+.show-desktop__small {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: block !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Small) (Inline)
+
+    [Description]
+        Show an element for the small desktop breakpoint only, and display as inline.
+**/
+.show-desktop__small-i {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Small) (Inline Block)
+
+    [Description]
+        Show an element for the small desktop breakpoint only, and display as inline-block.
+**/
+.show-desktop__small-ib {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline-block !important; }
+    @media (min-width: @medium-desktop-breakpoint) { display: none !important; }
+}
+
+
+/**
+    Show on Desktop Mixin (Medium)
+
+    [Description]
+        Show an element for the medium desktop breakpoint only.
+**/
+.show-desktop__medium {
+    display: none !important;
+    @media (min-width: @medium-desktop-breakpoint) { display: block !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Medium) (Inline)
+
+    [Description]
+        Show an element for the medium desktop breakpoint only, and display as inline.
+**/
+.show-desktop__medium-i {
+    display: none !important;
+    @media (min-width: @medium-desktop-breakpoint) { display: inline !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Medium) (Inline Block)
+
+    [Description]
+        Show an element for the medium desktop breakpoint only, and display as inline-block.
+**/
+.show-desktop__medium-ib {
+    display: none !important;
+    @media (min-width: @medium-desktop-breakpoint) { display: inline-block !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+
+
+/**
+    Show on Desktop Mixin (Small AND Medium)
+
+    [Description]
+        Show an element for the small and medium desktop breakpoints only.
+**/
+.show-desktop__smedium {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: block !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Small AND Medium) (Inline)
+
+    [Description]
+        Show an element for the small and medium desktop breakpoints only, and display as inline.
+**/
+.show-desktop__smedium-i {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+/**
+    Show on Desktop Mixin (Small AND Medium) (Inline Block)
+
+    [Description]
+        Show an element for the small and medium desktop breakpoints only, and display as inline-block.
+**/
+.show-desktop__smedium-ib {
+    display: none !important;
+    @media (min-width: @small-desktop-breakpoint) { display: inline-block !important; }
+    @media (min-width: @large-desktop-breakpoint) { display: none !important; }
+}
+
+
+/**
+    Show on Desktop Mixin (Large)
+
+    [Description]
+        Show an element for the large desktop breakpoint only.
+**/
+.show-desktop__large {
+    display: none !important;
+    @media (min-width: @large-desktop-breakpoint) { display: block !important; }
+}
+
+/**
+    Show on Desktop Mixin (Large) (Inline)
+
+    [Description]
+        Show an element for the large desktop breakpoint only, and display as inline.
+**/
+.show-desktop__large-i {
+    display: none !important;
+    @media (min-width: @large-desktop-breakpoint) { display: inline !important; }
+}
+
+/**
+    Show on Desktop Mixin (Large) (Inline Block)
+
+    [Description]
+        Show an element for the large desktop breakpoint only, and display as inline-block.
+**/
+.show-desktop__large-ib {
+    display: none !important;
+    @media (min-width: @large-desktop-breakpoint) { display: inline-block !important; }
+}
+
+
+
+
+/**
+    Transition Mixin
+
+    [Description]
+        Shortcut for adding a CSS3 transition using the shorthand notation.
+**/
+.transition(@properties:all, @duration:0.2s, @ease:ease-out, @delay: 0s) {
+  -webkit-transition: @properties @duration @ease @delay;
+  transition: @properties @duration @ease @delay;
+}
+
+
+
+
+/**
+    Transparent Mixin
+
+    [Description]
+       Modifies the alpha transparency for the background, without affecting the content. Takes RGB (not hex) for color.
+       You can specify "black" or "white" as the second param, or specify your own RGB values.
+
+    [Example]
+        .transparent(.75, 0, 30, 255);
+
+        // Output:
+        background: rgb(0, 30, 255);
+        background: rgba(0, 30, 255, .75);
+**/
+.transparent(@alpha: 0.5, @red: 0, @green: 0, @blue: 0) when ( isnumber(@red) ) {
+  background: rgb(@red, @green, @blue);
+  background: rgba(@red, @green, @blue, @alpha);
+}
+
+.transparent(@alpha: 0.5, black) {
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, @alpha);
+}
+
+.transparent(@alpha: 0.5, white) {
+  background: rgb(255, 255, 255);
+  background: rgba(255, 255, 255, @alpha);
+}
+
+
+
+
+/**
+    Vertical Align Mixin
+
+    [Description]
+       Provides shortcuts for vertically aligning an element.
+
+    [Example]
+        .vertical-align(relative);
+
+        // Output:
+
+    [Example #2]
+        .vertical-align(absolute);
+
+        // Output:
+
+**/
+.vertical-align(relative, @height) when (isnumber(@height)) and not (ispercentage(@height)) {
+    @halfHeight: @height / 2;
+    position: relative;
+    top: 50%;
+    .rem(margin-top, -@halfHeight);
+}
+
+.vertical-align(relative, @height) when (ispercentage(@height)) {
+    @offsetHeight: (100 - @height) / 2;
+    position: relative;
+    height: @height;
+    top: @offsetHeight;
+}
+
+.vertical-align(absolute, @height) when (isnumber(@height)) and not (ispercentage(@height)) {
+    @halfHeight: @height / 2;
+    position: absolute;
+    top: 50%;
+    .rem(margin-top, -@halfHeight);
+}
+
+.vertical-align(absolute, @height) when (ispercentage(@height)) {
+    @offsetHeight: (100 - @height) / 2;
+    position: absolute;
+    height: @height;
+    top: @offsetHeight;
+}

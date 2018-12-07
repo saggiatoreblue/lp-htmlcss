@@ -1,0 +1,235 @@
+/*********************************
+    [Description]
+        This is where all Flexbox styles will reside.
+    [Table of Contents]
+        FLEX STYLES PATTERNS
+        FLEX STYLES MIXINS
+    [NOTES]
+        When Styling for Flexbox there are two basic components:
+        1 - The Flex Container
+        2 - The Flex Items
+        - Nearly any Selector can act as both a container and item.
+        - When adding both sets of flex declarations to a Selector, separate accordingly:
+            -- Flex Container styles > Flex Item styles > Basic CSS styles
+            -- Example:
+                Selector {
+                    //Flex Container Styles First
+                    //Use the values displayed to the right of the property
+                    .flex-display(@value); ||| Flex or inline-flex |||
+                    .flex-direction(@direction); ||| row | row-reverse | column | column-reverse |||
+                    .flex-wrap(@wrap); ||| nowrap | wrap | wrap-reverse |||
+                    .flex-justify-content(@justifyContent); ||| flex-start | flex-end | center | space-between | space-around |||
+                    .flex-align-items(@alignItems); ||| flex-start | flex-end | center | baseline | stretch |||
+                    .flex-align-content(@alignContent); ||| flex-start | flex-end | center | space-between | space-around | stretch |||
+                    .flex-align-self(@alignSelf); ||| flex-start | flex-end | center | baseline | stretch  |||
+                    //Flex Item Styles Second
+                    .flex-order(@order); ||| <integer> |||
+                    .flex(@value @value @value); ||| Grow <number>, Shrink <number>, Basis <length/Percentage> |||
+                    .flex-align-self(@alignSelf); ||| auto | flex-start | flex-end | center | baseline | stretch|||
+                    //Basic CSS Styles Third
+                    color: value;
+                    width: px/%/variable;
+                    height: px/%/variable;
+                    padding: px/%/variable;
+                    margin: px/%/variable;
+                    //and etc
+                }
+            -- Separation applies to media queries as well
+        - Note that float, clear and vertical-align have no effect on a flex item.
+******************************/
+
+
+////    Patterns      ////
+#patterns {
+    .flex-row {
+        .flex-display(flex);
+        .flex-direction(row);
+        .flex-wrap(wrap);
+        .flex-justify-content(flex-start);
+        .flex-align-items(flex-start);
+        &.show {
+            // to override "show" class "display: block !important"
+            .flex-display-important(flex);
+        }
+    }
+
+    .flex-column {
+        .flex-display(flex);
+        .flex-direction(column);
+        .flex-justify-content(flex-start);
+        .flex-align-items(flex-start);
+        &.show {
+            // to override "show" class "display: block !important"
+            .flex-display-important(flex);
+        }
+    }
+}
+
+
+////    Mixins      ////
+.flex-display(@value) when (@value = flex) {
+    display: -ms-flexbox; // IE10
+    display: -webkit-box; // Safari / iOS
+    display: -webkit-flex; // Safari / iOS
+}
+
+.flex-display(@value) when (@value = inline-flex) {
+    display: -ms-inline-flexbox; // IE10
+    display: -webkit-inline-box; // Safari / iOS
+    display: -webkit-inline-flex; // Safari / iOS
+}
+
+.flex-display-important(@value) when (@value = flex) {
+    display: -ms-flexbox !important; // IE10
+    display: -webkit-box !important; // Safari / iOS
+    display: -webkit-flex !important; // Safari / iOS
+}
+
+.flex-display-important(@value) when (@value = inline-flex) {
+    display: -ms-inline-flexbox !important; // IE10
+    display: -webkit-inline-box !important; // Safari / iOS
+    display: -webkit-inline-flex!important; // Safari / iOS
+}
+
+.flex-display(@value) {
+    display: @value;
+}
+
+.flex-display-important(@value) {
+    display: @value !important;
+}
+
+.flex(@value) {
+    -ms-flex: @value;
+    -webkit-box-flex: 1;
+    -webkit-flex: @value;
+    flex: @value;
+}
+
+.flex-justify-content(@justifyContent) {
+    .ms-flex-justify-content(@justifyContent); // IE10
+    -webkit-box-pack: start; // Safari / iOS
+    -webkit-justify-content: @justifyContent; // Safari / iOS
+    justify-content: @justifyContent;
+}
+
+.flex-align-content(@alignContent) {
+    .ms-flex-align-content(@alignContent); // IE10
+    -webkit-box-align: start;
+    -webkit-align-content: @alignContent; // Safari / iOS
+    align-content: @alignContent;
+}
+
+.flex-align-items(@alignItems) {
+    .ms-flex-align-items(@alignItems); // IE10
+    -webkit-box-align: start; // Safari / iOS
+    -webkit-align-items: @alignItems; // Safari / iOS
+    align-items: @alignItems;
+}
+
+.flex-align-self(@alignSelf) {
+    .ms-flex-align-self(@alignSelf); // IE10
+    -webkit-align-self: @alignSelf; // Safari / iOS
+    align-self: @alignSelf;
+}
+
+.flex-direction(@direction) when (@direction = column) {
+     -webkit-box-orient: vertical !important; // Safari / iOS
+     -webkit-box-direction: normal;
+}
+
+.flex-direction(@direction) {
+    -ms-flex-direction: @direction; // IE10
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: @direction; // Safari / iOS
+    flex-direction: @direction;
+}
+
+.flex-order(@order) {
+    -ms-flex-order: @order; // IE10
+    -webkit-box-ordinal-group: @order; // Safari / iOS
+    -webkit-order: @order; // Safari / iOS
+    order: @order;
+}
+
+.flex-wrap(@wrap) {
+    .ms-flex-wrap(@wrap); // IE10
+    -webkit-box-lines: multiple; // Safari / iOS
+    -webkit-flex-wrap: @wrap; // Safari / iOS
+    flex-wrap: @wrap;
+}
+
+
+/* These are the conditional mixins for the different syntax for IE10 Flexbox */
+.ms-flex-justify-content(@justifyContent) when (@justifyContent = space-between) {
+    -ms-flex-pack: justify;
+}
+
+.ms-flex-justify-content(@justifyContent) when (@justifyContent = space-around) {
+    -ms-flex-pack: distribute;
+}
+
+.ms-flex-justify-content(@justifyContent) when (@justifyContent = flex-start) {
+    -ms-flex-pack: start;
+}
+
+.ms-flex-justify-content(@justifyContent) when (@justifyContent = flex-end) {
+    -ms-flex-pack: end;
+}
+
+.ms-flex-justify-content(@justifyContent) when (@justifyContent = center) {
+    -ms-flex-pack: center;
+}
+
+.ms-flex-align-content(@alignContent) when (@alignContent = space-between) {
+    -ms-flex-line-pack: justify;
+}
+
+.ms-flex-align-content(@alignContent) when (@alignContent = space-around) {
+    -ms-flex-line-pack: distribute;
+}
+
+.ms-flex-align-content(@alignContent) when (@alignContent = flex-start) {
+    -ms-flex-line-pack: start;
+}
+
+.ms-flex-align-content(@alignContent) when (@alignContent = flex-end) {
+    -ms-flex-line-pack: end;
+}
+
+.ms-flex-align-content(@alignContent) when (@alignContent = center), (@alignContent = stretch) {
+    -ms-flex-line-pack: @alignContent;
+}
+
+.ms-flex-align-items(@alignItems) when (@alignItems = flex-start) {
+    -ms-flex-align: start;
+}
+
+.ms-flex-align-items(@alignItems) when (@alignItems = flex-end) {
+    -ms-flex-align: end;
+}
+
+.ms-flex-align-items(@alignItems) when (@alignItems = center), (@alignItems = baseline), (@alignItems = stretch) {
+    -ms-flex-align: @alignItems;
+}
+
+.ms-flex-align-self(@alignSelf) when (@alignSelf = flex-start) {
+    -ms-flex-item-align: start;
+}
+
+.ms-flex-align-self(@alignSelf) when (@alignSelf = flex-end) {
+    -ms-flex-item-align: end;
+}
+
+.ms-flex-align-self(@alignSelf) when (@alignSelf = auto), (@alignSelf = center), (@alignSelf = baseline), (@alignSelf = stretch) {
+    -ms-flex-item-align: @alignSelf;
+}
+
+.ms-flex-wrap(@wrap) when (@wrap = nowrap) {
+    -ms-flex-wrap: none;
+}
+
+.ms-flex-wrap(@wrap) when (@wrap = wrap), (@wrap = wrap-reverse) {
+    -ms-flex-wrap: @wrap;
+}

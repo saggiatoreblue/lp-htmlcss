@@ -1,0 +1,245 @@
+/**
+    Grid System
+
+    [Description]
+        The grid system allows for layouts of 10 columns or less, with the ability to add gutters that span evenly across multiple rows.
+**/
+
+// Base classes
+.grid { .clear-fix; }
+.unit { float: left;  }
+.unit-right { float: right;  }
+
+// 1 Column
+.size1of1 { width: 100%; }
+.size1of1(single, @gutter) { .singleline(100%, @gutter); }
+.size1of1(@gutter, @columns: 1) when (isnumber(@gutter)) { .multiline(100%, @gutter, @columns); }
+
+// 2 Columns
+.size1of2 { width: 50%; }
+.size1of2(single, @gutter) { .singleline(50%, @gutter); }
+.size1of2(@gutter, @columns: 2) when (isnumber(@gutter)) { .multiline(50%, @gutter, @columns); }
+
+// 3 Columns
+.size1of3 { width: 33.3333333%; }
+.size2of3 { width: 66.6666666%; }
+.size1of3(single, @gutter) { .singleline(33.3333333%, @gutter); }
+.size2of3(single, @gutter) { .singleline(66.6666666%, @gutter); }
+.size1of3(@gutter, @columns: 3) when (isnumber(@gutter)) { .multiline(33.3333333%, @gutter, @columns); }
+.size2of3(@gutter, @columns: 3) when (isnumber(@gutter)) { .multiline(66.6666666%, @gutter, @columns); }
+
+// 4 Columns
+.size1of4 { width: 25%; }
+.size2of4 { width: 50%; }
+.size3of4 { width: 75%; }
+.size1of4(single, @gutter) { .singleline(25%, @gutter); }
+.size2of4(single, @gutter) { .singleline(50%, @gutter); }
+.size3of4(single, @gutter) { .singleline(75%, @gutter); }
+.size1of4(@gutter, @columns: 4) when (isnumber(@gutter)) { .multiline(25%, @gutter, @columns); }
+.size2of4(@gutter, @columns: 4) when (isnumber(@gutter)) { .multiline(50%, @gutter, @columns); }
+.size3of4(@gutter, @columns: 4) when (isnumber(@gutter)) { .multiline(75%, @gutter, @columns); }
+
+// 5 Columns
+.size1of5 { width: 20%; }
+.size2of5 { width: 40%; }
+.size3of5 { width: 60%; }
+.size4of5 { width: 80%; }
+.size1of5(single, @gutter) { .singleline(20%, @gutter); }
+.size2of5(single, @gutter) { .singleline(40%, @gutter); }
+.size3of5(single, @gutter) { .singleline(60%, @gutter); }
+.size4of5(single, @gutter) { .singleline(80%, @gutter); }
+.size1of5(@gutter, @columns: 5) when (isnumber(@gutter)) { .multiline(20%, @gutter, @columns); }
+.size2of5(@gutter, @columns: 5) when (isnumber(@gutter)) { .multiline(40%, @gutter, @columns); }
+.size3of5(@gutter, @columns: 5) when (isnumber(@gutter)) { .multiline(60%, @gutter, @columns); }
+.size4of5(@gutter, @columns: 5) when (isnumber(@gutter)) { .multiline(80%, @gutter, @columns); }
+
+// 6 Columns
+.size1of6 { width: 16.6666666%; }
+.size2of6 { width: 33.3333333%; }
+.size3of6 { width: 50%; }
+.size4of6 { width: 66.6666666%; }
+.size5of6 { width: 83.3333333%; }
+.size1of6(single, @gutter) { .singleline(16.6666666%, @gutter); }
+.size2of6(single, @gutter) { .singleline(33.3333333%, @gutter); }
+.size3of6(single, @gutter) { .singleline(50%, @gutter); }
+.size4of6(single, @gutter) { .singleline(66.6666666%, @gutter); }
+.size5of6(single, @gutter) { .singleline(83.3333333%, @gutter); }
+.size1of6(@gutter, @columns: 6) when (isnumber(@gutter)) { .multiline(16.6666666%, @gutter, @columns); }
+.size2of6(@gutter, @columns: 6) when (isnumber(@gutter)) { .multiline(33.3333333%, @gutter, @columns); }
+.size3of6(@gutter, @columns: 6) when (isnumber(@gutter)) { .multiline(50%, @gutter, @columns); }
+.size4of6(@gutter, @columns: 6) when (isnumber(@gutter)) { .multiline(66.6666666%, @gutter, @columns); }
+.size5of6(@gutter, @columns: 6) when (isnumber(@gutter)) { .multiline(83.3333333%, @gutter, @columns); }
+
+// 7 Columns
+.size1of7 { width: 14.2857142%; }
+.size2of7 { width: 28.5714285%; }
+.size3of7 { width: 42.8571428%; }
+.size4of7 { width: 57.1428571%; }
+.size5of7 { width: 71.4285714%; }
+.size6of7 { width: 85.7142857%; }
+.size1of7(single, @gutter) { .singleline(14.2857142%, @gutter); }
+.size2of7(single, @gutter) { .singleline(28.5714285%, @gutter); }
+.size3of7(single, @gutter) { .singleline(42.8571428%, @gutter); }
+.size4of7(single, @gutter) { .singleline(57.1428571%, @gutter); }
+.size5of7(single, @gutter) { .singleline(71.4285714%, @gutter); }
+.size6of7(single, @gutter) { .singleline(85.7142857%, @gutter); }
+.size1of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(14.2857142%, @gutter, @columns); }
+.size2of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(28.5714285%, @gutter, @columns); }
+.size3of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(42.8571428%, @gutter, @columns); }
+.size4of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(57.1428571%, @gutter, @columns); }
+.size5of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(71.4285714%, @gutter, @columns); }
+.size6of7(@gutter, @columns: 7) when (isnumber(@gutter)) { .multiline(85.7142857%, @gutter, @columns); }
+
+// 8 Columns
+.size1of8 { width: 12.5% }
+.size2of8 { width: 24%; }
+.size3of8 { width: 36.5%; }
+.size4of8 { width: 50%; }
+.size5of8 { width: 62.5%; }
+.size6of8 { width: 75%; }
+.size7of8 { width: 87.5%; }
+.size1of8(single, @gutter) { .singleline(12.5%, @gutter); }
+.size2of8(single, @gutter) { .singleline(24%, @gutter); }
+.size3of8(single, @gutter) { .singleline(36.5%, @gutter); }
+.size4of8(single, @gutter) { .singleline(50%, @gutter); }
+.size5of8(single, @gutter) { .singleline(62.5%, @gutter); }
+.size6of8(single, @gutter) { .singleline(75%, @gutter); }
+.size7of8(single, @gutter) { .singleline(87.5%, @gutter); }
+.size1of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(12.5%, @gutter, @columns); }
+.size2of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(24%, @gutter, @columns); }
+.size3of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(36.5%, @gutter, @columns); }
+.size4of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(50%, @gutter, @columns); }
+.size5of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(62.5%, @gutter, @columns); }
+.size6of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(75%, @gutter, @columns); }
+.size7of8(@gutter, @columns: 8) when (isnumber(@gutter)) { .multiline(87.5%, @gutter, @columns); }
+
+// 9 Columns
+.size1of9 { width: 11.1111111%; }
+.size2of9 { width: 22.2222222%; }
+.size3of9 { width: 33.3333333%; }
+.size4of9 { width: 44.4444444%; }
+.size5of9 { width: 55.5555555%; }
+.size6of9 { width: 66.6666666%; }
+.size7of9 { width: 77.7777777%; }
+.size8of9 { width: 88.8888888%; }
+.size1of9(single, @gutter) { .singleline(11.1111111%, @gutter); }
+.size2of9(single, @gutter) { .singleline(22.2222222%, @gutter); }
+.size3of9(single, @gutter) { .singleline(33.3333333%, @gutter); }
+.size4of9(single, @gutter) { .singleline(44.4444444%, @gutter); }
+.size5of9(single, @gutter) { .singleline(55.5555555%, @gutter); }
+.size6of9(single, @gutter) { .singleline(66.6666666%, @gutter); }
+.size7of9(single, @gutter) { .singleline(77.7777777%, @gutter); }
+.size8of9(single, @gutter) { .singleline(88.8888888%, @gutter); }
+.size1of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(11.1111111%, @gutter, @columns); }
+.size2of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(22.2222222%, @gutter, @columns); }
+.size3of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(33.3333333%, @gutter, @columns); }
+.size4of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(44.4444444%, @gutter, @columns); }
+.size5of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(55.5555555%, @gutter, @columns); }
+.size6of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(66.6666666%, @gutter, @columns); }
+.size7of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(77.7777777%, @gutter, @columns); }
+.size8of9(@gutter, @columns: 9) when (isnumber(@gutter)) { .multiline(88.8888888%, @gutter, @columns); }
+
+// 10 Columns
+.size1of10 { width: 10%; }
+.size2of10 { width: 20%; }
+.size3of10 { width: 30%; }
+.size4of10 { width: 40%; }
+.size5of10 { width: 50%; }
+.size6of10 { width: 60%; }
+.size7of10 { width: 70%; }
+.size8of10 { width: 80%; }
+.size9of10 { width: 90%; }
+.size1of10(single, @gutter) { .singleline(10%, @gutter); }
+.size2of10(single, @gutter) { .singleline(20%, @gutter); }
+.size3of10(single, @gutter) { .singleline(30%, @gutter); }
+.size4of10(single, @gutter) { .singleline(40%, @gutter); }
+.size5of10(single, @gutter) { .singleline(50%, @gutter); }
+.size6of10(single, @gutter) { .singleline(60%, @gutter); }
+.size7of10(single, @gutter) { .singleline(70%, @gutter); }
+.size8of10(single, @gutter) { .singleline(80%, @gutter); }
+.size9of10(single, @gutter) { .singleline(90%, @gutter); }
+.size1of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(10%, @gutter, @columns); }
+.size2of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(20%, @gutter, @columns); }
+.size3of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(30%, @gutter, @columns); }
+.size4of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(40%, @gutter, @columns); }
+.size5of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(50%, @gutter, @columns); }
+.size6of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(60%, @gutter, @columns); }
+.size7of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(70%, @gutter, @columns); }
+.size8of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(80%, @gutter, @columns); }
+.size9of10(@gutter, @columns: 10) when (isnumber(@gutter)) { .multiline(90%, @gutter, @columns); }
+
+// Output gutter in both px and rem units
+.gutter(@width, @gutter) {
+    width: @width;
+
+    @gutterHalf: @gutter / 2;
+    @gutterHalfREM: @gutterHalf / 16;
+
+    padding: 0 ~"@{gutterHalf}px";
+    padding: 0 ~"@{gutterHalfREM}rem";
+
+    &:first-child{
+        padding-left: 0;
+        padding-right: ~"@{gutterHalf}px";
+        padding-right: ~"@{gutterHalfREM}rem";
+    }
+    &:last-child {
+        padding-right: 0;
+        padding-left: ~"@{gutterHalf}px";
+        padding-left: ~"@{gutterHalfREM}rem";
+    }
+}
+
+// Single Line mixin for grids that remain on the same line
+.singleline(@width, @gutter) {
+    width: @width;
+    padding-left: (@gutter / 2) + 0px;
+    padding-left: ( (@gutter / 2) / 16 ) + 0rem;
+    padding-right: (@gutter / 2) + 0px;
+    padding-right: ( (@gutter / 2) / 16 ) + 0rem;
+
+    &:first-child {
+        padding-left: 0; 
+    }
+
+    &:last-child {
+        padding-right: 0;
+    }
+}
+
+// Multiline mixin for grids that span multiple lines
+.multiline(@width, @gutter, @colsPerRow) {
+    width: @width;
+
+    // Loop through each column, applying different fractionals width to achieve even gutters
+    .loop(@dec, @inc) when (@dec > 0) {
+        @paddingLeft: ( (@inc - 1) / @colsPerRow) * @gutter;
+        @paddingRight: ( (@dec - 1) / @colsPerRow) * @gutter;
+        @selector: ~"@{colsPerRow}n+@{inc}";
+        @secondRowUnit: @colsPerRow + 1;
+        @secondRowAndBeyond: ~"1n+@{secondRowUnit}";
+
+        &:nth-child(@{colsPerRow}n+@{inc}) {
+            padding-left: @paddingLeft + 0px;
+            padding-left: (@paddingLeft / 16) + 0rem;
+            padding-right: @paddingRight + 0px;
+            padding-right: (@paddingRight / 16) + 0rem;
+        }
+
+        &:nth-child(1n) {
+            margin-top: 0;
+        }
+
+        &:nth-child(1n+@{secondRowUnit}) {
+            margin-top: @gutter + 0px;
+            margin-top: (@gutter / 16) + 0rem;
+        }
+
+        .loop(@dec - 1, @inc + 1);
+    }
+    // End loop when index is 0
+    .loop(0) {}
+
+    // Start loop
+    .loop (@colsPerRow, 1);
+}
