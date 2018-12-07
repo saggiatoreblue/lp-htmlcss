@@ -61,6 +61,7 @@
 
 
 
+
 /**
     Custom Variables Pt 1
 
@@ -75,28 +76,20 @@
         - md = medium
 **/
 
-@red: #ed1c24;
-@green: #38a927;
-@yellow : #ffcc00;
+@primary-color: #c3a490;
+@primary-color-dark: darken(@primary-color, 20%);
 
-@primary-color: #0054a0;
-@primary-color-dark: #000056;
-@primary-color-md: #7fa9cf;
-@primary-color-light: #dde9f3;
-@primary-color-des: #aec9d7;
-@primary-color-des-dark: #092e4f;
 
 @secondary-color: #f7841b;
 @secondary-color-dark: #f44e0f;
 @secondary-color-light: #fbc18d;
 
-@tertiary-color: #888;
-@tertiary-color-dark: #484848;
-@tertiary-color-md: #aaa;
-@tertiary-color-md-lt: #ccc;
-@tertiary-color-light: #e9eaee;
-@tertiary-color-extra-lt: #f4f5f7;
-@tertiary-color-warm: #f2e9e1;
+@tertiary-color: #898c91;
+@tertiary-color-light: #afb2c0;
+
+
+
+
 
 /**
     Required Defaults
@@ -106,34 +99,24 @@
 **/
 @default-font-family: 'Open Sans', sans-serif;
 @default-background-color: @tertiary-color-light;
-@default-text-color: @tertiary-color-dark;
-@default-font-size: 16;
+@default-text-color: #202228;
+@default-font-size: 12;
 @default-font-weight: 400;
 @font-weight-light: 300;
 @font-weight-bold: 600;
 @font-weight-bolder: 700;
 
-@header-text-color: @tertiary-color-extra-lt;
-
 @html-background-color: @tertiary-color;
-
-@footer-text-color: @tertiary-color-extra-lt;
-@footer-background-color: {background: @tertiary-color;};
-
 
 @heading-font-family: 'Open Sans', sans-serif;
 @heading-background-color: transparent;
-@heading-text-color: @tertiary-color-dark;
+@heading-text-color: #000;
 @heading-font-size: @default-font-size + 8;
 @heading-font-weight: 700;
 
-@panel-background-color: #fff;
-@panel-text-color: @default-text-color;
-@panel-border-radius: 0;
-@alt-panel-background-color: @tertiary-color-dark;
-
-@input-text-color: #666;
-@input-border-radius: 4;
+@module-background-color: #fff;
+@module-text-color: @default-text-color;
+@module-border-radius: 0;
 
 @line-height-base: 0.25; // this is used as a base value to calculate all line heights
 @line-height-normalized: @line-height-base * 4; // this sets line height to 1, to remove the influence of line-height on an elements vertical center
@@ -144,22 +127,20 @@
 
 @border-width: 1;
 @border-style: solid;
-@border-color: @tertiary-color-md-lt;
-@light-border-color: @tertiary-color-extra-lt;//lighten(@border-color, 15%)
-@dark-border-color: @tertiary-color-dark;//darken(@border-color, 10%)
+@border-color: @primary-color;
 
-@button-text-color: #fff;
-@button-background-color: @secondary-color;
-@alt-button-background-color: @secondary-color-light;
-@button-border-color: transparent;
-@button-border-radius: 5;
-@button-vertical-padding: 15; //7
-@button-horizontal-padding: 20; //21
-@button-background-hover-color: @secondary-color-dark;
+@button-text-color: @default-text-color;
+@button-background-color: #fff;
+@button-border-color: @border-color;
+@button-border-radius: 40;
+@button-vertical-padding: 10;
+@button-horizontal-padding: 0;
+@button-width: 150;
+@button-background-hover-color: @primary-color;
 @alt-button-background-hover-color: @tertiary-color;
 
-@lightbox-header-background-color: @primary-color;
-@lightbox-background-color: @panel-background-color;
+
+
 
 /**
     Optional Defaults
@@ -170,12 +151,6 @@
 @font-size-ratio: 1;
 @line-height-ratio: 1.5;
 @icon-font-size: @default-font-size * @line-height-ratio;
-@lowlight-text-color: @default-text-color; // For alternating table row text colors
-@lowlight-background-color: transparent; // For alternating table row background colors
-@highlight-text-color: @default-text-color; // For alternating table row text colors
-@highlight-background-color: rgba(0, 0, 0, .07); // For alternating table row background colors
-
-
 @padding: (@line-height-ratio - @font-size-ratio) * @default-font-size; //8
 @padding-half: @padding / 2; //4
 @padding-third: @padding / 3; //2.6666
@@ -191,11 +166,10 @@
 @gutter-double: @gutter * 2; //48
 @gutter-triple: @gutter * 3; //72
 @gutter-quadruple: @gutter * 4; //96
-@form-error-border-color: #f7841b;
-@form-error-background-color: #fff;
-@form-error-text-color: @default-text-color;
-@widget-vertical-padding: @padding-double;
-@widget-horizontal-padding: @padding-triple;
+
+
+
+
 /**
     Custom Variables Pt 2
 
@@ -220,7 +194,8 @@
 @line-height-large: @line-height-base * 8; // 2
 @line-height-extra-large : @line-height-base * 15;// 3.75
 
-@loader-color: @secondary-color;
+
+
 
 /**
     LESS Imports
