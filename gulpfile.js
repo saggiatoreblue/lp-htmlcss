@@ -12,16 +12,20 @@ gulp.task('build', ['copy:images'], function () {
         .pipe(gulp.dest(dest))
 });
 gulp.task('watch', function() {
-    gulp.watch('app/**/*', ['build', 'copy:images']);
+    gulp.watch('app/**/*', ['build', 'copy:images', 'copy:scripts']);
 });
 
 gulp.task('clean', function () {
-    return gulp.src([dest + '/**/*'])
+    return gulp.src([dest + '/images/**/*'])
         .pipe(clean());
 });
 gulp.task('copy:images', function() {
     return gulp.src(src + '/images/**/*')
         .pipe(gulp.dest(dest + '/images'));
 });
+gulp.task('copy:scripts', function() {
+    return gulp.src(src + '/scripts/**/*')
+        .pipe(gulp.dest(dest + '/scripts'));
+});
 
-gulp.task('default', ['build', 'copy:images', 'watch']);
+gulp.task('default', ['clean', 'build', 'copy:images', 'copy:scripts', 'watch']);
