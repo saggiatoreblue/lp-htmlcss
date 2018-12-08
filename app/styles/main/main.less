@@ -40,7 +40,10 @@ body {
     font-weight: @default-font-weight;
     line-height: @line-height-default;
     height: 100%;
-    background: linear-gradient(to bottom, #1a1827 18%,#311532 74%);
+
+    &.lp {
+	  background: linear-gradient(to bottom, #1a1827 18%,#311532 74%);
+    }
     @media (max-width: @mw_tablet-breakpoint) {
 	  .rem(padding, @padding-triple, 0);
     }
@@ -255,6 +258,24 @@ a[disabled] {
     }
 }
 
+////    Buttons Modifier: Switch  ////
+.button__switch {
+	.rem(top, 0);
+	.rem(left, 0);
+	border: none;
+	z-index: 10;
+	position: fixed;
+	border-radius: 0;
+	border-bottom-right-radius: 5px;
+	&:hover {
+		background: @tertiary-color;
+		.button--text {
+			color: #fff;
+		}
+	}
+	.button--text {}
+}
+
 
 
 
@@ -309,7 +330,7 @@ a[disabled] {
 		.size1of1;
     	&:before {
 		  .transition(all, 0.5s, ease);
-		  width: 101%;
+		  .size1of1;
 		  position: absolute;
 		  content: "";
 		  display: block;
@@ -318,8 +339,7 @@ a[disabled] {
 		  background-size: cover;
 		  opacity: 0.5;
 		  .active & {
-		  	opacity: 1;
-		  	.size1of1;
+			opacity: 1;
 		  }
     	}
     }

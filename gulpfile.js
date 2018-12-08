@@ -3,7 +3,6 @@ var less = require('gulp-less');
 var gutil = require('gulp-util');
 var dest = "./build";
 var src = './app';
-var clean = require('gulp-clean');
 
 
 gulp.task('build', ['copy:images'], function () {
@@ -28,4 +27,4 @@ gulp.task('copy:scripts', function() {
         .pipe(gulp.dest(dest + '/scripts'));
 });
 
-gulp.task('default', ['clean', 'build', 'copy:images', 'copy:scripts', 'watch']);
+gulp.task('default', ['build', 'copy:images', 'copy:scripts', 'watch']);
